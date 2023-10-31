@@ -1,0 +1,1 @@
+### Não esqueça de configurar um .env antes de rodar
