@@ -6,7 +6,7 @@ const { livrosRouter } = require('./app/roteadores/livrosRouter')
 const { funcionariosRouter } = require('./app/roteadores/funcionariosRouter')
 const { exemplaresRouter } = require('./app/roteadores/exemplaresRouter')
 const app = express()
-const port = process.env.APP_PORT
+const port = process.env.APPPORT
 
 app.use(bodyParser.json()) // Parseia todo req.body para JSON
 app.use('/usuarios', usuariosRouter)
