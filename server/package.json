@@ -2,9 +2,9 @@
   "name": "sistema_biblioteca",
   "version": "1.0.0",
   "description": "Sistema de gerenciamento de biblioteca desenvolvido como trabalho para a disciplina de banco de dados dois.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "author": "",
   "license": "MIT",

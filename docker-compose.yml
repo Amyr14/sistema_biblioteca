@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 
-  # construção da imagem do app
+  # construção da imagem da api
   api_sistema_biblioteca:
     container_name: sistema_biblioteca 
     env_file:
@@ -11,16 +11,16 @@ services:
       - PGDATABASE=$PGDATABASE
       - PGUSER=$PGUSER
       - PGHOST=db_biblioteca
-      - PGPASSWORD=?PGPASSWORD
-      - PGPORT=?PGPORT
+      - PGPASSWORD=$PGPASSWORD
+      - PGPORT=$PGPORT
     build:
-      context: .
-      dockerfile: app.dockerfile
+      context: ./server
+      dockerfile: server.dockerfile
     ports:
       - $APPLOCALPORT:$APPPORT
     volumes:
-      - app_data:/src
-      - /src/node_modules
+      - app_data:/build
+      - /build/node_modules
     depends_on:
       - postgres
   
@@ -34,8 +34,8 @@ services:
     ports:
     - $PGLOCALPORT:$PGPORT
     environment:
-      - PGDATABASE=$PGDATABASE
-      - PGUSER=$PGUSER 
+      - POSTGRES_DB=$PGDATABASE
+      - POSTGRES_USER=$PGUSER 
       - POSTGRES_PASSWORD=$PGPASSWORD 
     volumes:
     - pg_data:/var/lib/postgresql/data
