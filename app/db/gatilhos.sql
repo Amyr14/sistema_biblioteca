@@ -1,6 +1,6 @@
 
 -- Gatilho que impede o empréstimo de um usuário que atingiu seu limite
-CREATE OR REPLACE FUNCTION verifica_limite() RETURNS TRIGGER AS
+CREATE OR REPLACE FUNCTION verifica_limite() RETURNS trigger AS
 $$
 DECLARE
     cont_livros int;
@@ -26,23 +26,30 @@ END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER verifica_limite_g
+CREATE OR REPLACE trigger verifica_limite_g
 BEFORE INSERT OR UPDATE ON emprestimos
 FOR EACH ROW
 EXECUTE PROCEDURE verifica_limite();
 
 
 -- Gatilho que impede o empréstimo para um usuário que tem livros atrasados
-CREATE OR REPLACE FUNCTION verifica_livros_atrasados() RETURNS TRIGGER AS
+-- Testado
+CREATE OR REPLACE FUNCTION verifica_livros_atrasados() RETURNS trigger AS
 $$
 DECLARE
     num_livros_atrasados int;
+    hoje date;
 BEGIN
+    -- Caso especial: Se a operação for de update e o sistema estiver tentando resolver o empréstimo
+    IF TG_OP = 'UPDATE' AND OLD.resolvido = FALSE AND NEW.resolvido = TRUE THEN
+        RETURN NEW;
+    END IF;
+    
     -- Conta a quantidade de livros atrasados
+    hoje := NOW()::date;
     SELECT COUNT(*) INTO num_livros_atrasados
-    FROM usuarios u 
-    JOIN emprestimos e
-    ON u.id_usuario = e.id_usuario AND u.id_usuario = NEW.id_usuario AND NOW()::DATE > data_devolucao AND resolvido = FALSE;
+    FROM emprestimos
+    WHERE id_usuario = NEW.id_usuario AND hoje > data_devolucao AND resolvido = FALSE;
     
     IF num_livros_atrasados > 0 THEN
         RAISE EXCEPTION 'O usuário possui livros em atraso';
@@ -53,17 +60,23 @@ END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER verifica_livros_atrasados_g
+CREATE OR REPLACE trigger verifica_livros_atrasados_g
 BEFORE INSERT OR UPDATE ON emprestimos
 FOR EACH ROW
 EXECUTE PROCEDURE verifica_livros_atrasados();
 
 --Gatilho que impede o empréstimo para um usuário que tem multas em aberto
-CREATE OR REPLACE FUNCTION verifica_multas_abertas() RETURNS TRIGGER AS
+-- Testado
+CREATE OR REPLACE FUNCTION verifica_multas_abertas() RETURNS trigger AS
 $$
 DECLARE
     num_multas_abertas int;
 BEGIN
+     -- Caso especial: Se a operação for de update e o sistema estiver tentando resolver o empréstimo
+    IF TG_OP = 'UPDATE' AND OLD.resolvido = FALSE AND NEW.resolvido = TRUE THEN
+        RETURN NEW;
+    END IF;
+
     -- Conta a quantidade de multas não pagas
     SELECT COUNT(*) INTO num_multas_abertas
     FROM usuarios u 
@@ -79,15 +92,17 @@ BEGIN
 
     RETURN NEW;
 END;
+$$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER verifica_multas_abertas_g
+CREATE OR REPLACE trigger verifica_multas_abertas_g
 BEFORE INSERT OR UPDATE ON emprestimos
 FOR EACH ROW
 EXECUTE PROCEDURE verifica_multas_abertas();
 
 -- Gatilho que verifica se um livro está disponível
-CREATE OR REPLACE FUNCTION verifica_emprestimo_data() RETURNS TRIGGER AS
+-- Testado
+CREATE OR REPLACE FUNCTION verifica_emprestimo_data() RETURNS trigger AS
 $$
 DECLARE
     p_disponivel bool;
@@ -106,13 +121,14 @@ $$
 LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE TRIGGER verifica_emprestimo_data_g
+CREATE OR REPLACE trigger verifica_emprestimo_data_g
 BEFORE INSERT ON emprestimos
 FOR EACH ROW
 EXECUTE PROCEDURE verifica_emprestimo_data();
 
 -- Gatilho que verifica se o livro sendo emprestado é da coleção de reserva
-CREATE OR REPLACE FUNCTION verifica_emprestimo_colecao_reserva() RETURNS TRIGGER AS
+-- Testado
+CREATE OR REPLACE FUNCTION verifica_emprestimo_colecao_reserva() RETURNS trigger AS
 $$
 DECLARE
     colecao varchar(256);
@@ -130,13 +146,13 @@ END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER verifica_emprestimo_colecao_reserva_g
+CREATE OR REPLACE trigger verifica_emprestimo_colecao_reserva_g
 BEFORE INSERT ON emprestimos
 FOR EACH ROW
 EXECUTE PROCEDURE verifica_emprestimo_colecao_reserva();
 
 -- Gatilho que verifica a possibilidade de reserva em determinada data
-CREATE OR REPLACE FUNCTION verifica_reserva_data() RETURNS TRIGGER AS
+CREATE OR REPLACE FUNCTION verifica_reserva_data() RETURNS trigger AS
 $$
 DECLARE
     reg record;
@@ -153,26 +169,45 @@ END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER verifica_reserva_data_g
-BEFORE INSERT OR UPDATE ON reserva
+CREATE OR REPLACE trigger verifica_reserva_data_g
+BEFORE INSERT OR UPDATE ON reservas
 FOR EACH ROW
 EXECUTE PROCEDURE verifica_reserva_data();
 
 -- Gatilho que impede mais renovações do que o permitido
-CREATE OR REPLACE FUNCTION verifica_renovacoes() RETURNS TRIGGER AS
+-- Testado
+CREATE OR REPLACE FUNCTION verifica_renovacoes() RETURNS trigger AS
 $$
 BEGIN
-    
     IF NEW.num_renovacoes > (SELECT max_renovacoes FROM constantes) THEN
         RAISE EXCEPTION 'O usuário já atingiu o número máximo de renovações.';
     END IF;
 
-    RETURN OLD;
+    RETURN NEW;
 END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE TRIGGER verifica_renovacoes_g
+CREATE OR REPLACE trigger verifica_renovacoes_g
 BEFORE UPDATE ON emprestimos
 FOR EACH ROW
 EXECUTE PROCEDURE verifica_renovacoes();
+
+-- Impede auto-supervisão
+-- Testado
+CREATE OR REPLACE FUNCTION verifica_auto_supervisao() RETURNS trigger AS
+$$
+BEGIN
+    IF NEW.id_bibliotecario = NEW.id_assistente THEN
+        RAISE EXCEPTION 'Um funcionário não pode supervisionar ele mesmo.';
+    END IF;
+
+    RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE trigger verifica_auto_supervisao_g
+BEFORE INSERT OR UPDATE ON supervisao
+FOR EACH ROW
+EXECUTE PROCEDURE verifica_auto_supervisao();

@@ -5,7 +5,7 @@ async function getAll() {
     const query = 'SELECT mostra_usuarios()'
     const resposta = await cliente.query(query)
     cliente.release()
-    return resposta.rows
+    return resposta.rows.flatMap(item => item.mostra_usuarios)
 }
 
 async function get(id) {
@@ -13,7 +13,7 @@ async function get(id) {
     const query = 'SELECT mostra_usuario($1)'
     const resposta = await cliente.query(query, [id])
     cliente.release()
-    return resposta.rows[0]
+    return resposta.rows.map(item => item.mostra_usuario)
 }
 
 async function cadastraUsuario(obj) {
@@ -67,15 +67,17 @@ async function renovaEmprestimo(obj) {
 async function mostraMultasUsuario(id) {
     const cliente = await pool.connect()
     const query = 'SELECT mostra_multas_usuario($1)'
-    await cliente.query(query, [id])
+    const resposta = await cliente.query(query, [id])
     cliente.release()
+    return resposta.rows.flatMap(item => item.mostra_multas_usuario)
 }
 
 async function mostraEmprestimosUsuario(id) {
     const cliente = await pool.connect()
     const query = 'SELECT mostra_emprestimos_usuario($1)'
-    await cliente.query(query, [id])
+    const resposta = await cliente.query(query, [id])
     cliente.release()
+    return resposta.rows.flatMap(item => item.mostra_emprestimos_usuario)
 }
 
 module.exports = {
@@ -88,6 +90,5 @@ module.exports = {
     resolveEmprestimo,
     renovaEmprestimo,
     mostraEmprestimosUsuario,
-    geraMultas,
     mostraMultasUsuario
 }

@@ -1,42 +1,53 @@
 const express = require('express')
-const funcionariosController = require('../data_acess/funcionariosDataAcess')
-const router = express.Router()
+const dataAccessFuncionarios = require('../data_access/dataAccessFuncionarios')
+const funcionariosRouter = express.Router()
 
-router.get('/', async (req, res) => {
+funcionariosRouter.get('/', async (req, res) => {
     try {
-        const resposta = await funcionariosDataAcess.getAll()
+        const resposta = await dataAccessFuncionarios.getAll()
         res.status(200).json(resposta)
     } catch (erro) {
         res.status(500).send(`Erro: ${erro.message}`)
     }
 })
 
-router.get('/:id_funcionario', async (req, res) => {
+funcionariosRouter.get('/:id_funcionario', async (req, res) => {
     try {
         const id = parseInt(req.params.id_funcionario)
-        const resposta = await funcionariosDataAcess.get(id)
+        const resposta = await dataAccessFuncionarios.get(id)
         res.status(200).json(resposta)
     } catch (erro) {
         res.status(500).send(`Erro: ${erro.message}`)
     }
 })
 
-router.post('/', async (req, res) => {
+funcionariosRouter.post('/', async (req, res) => {
     try {
-        const obj = JSON.parse(req.body)
-        await funcionariosDataAcess.cadastraFuncionario(obj)
+        await dataAccessFuncionarios.cadastraFuncionario(req.body)
         res.status(200).send('Funcinário cadastrado!')
-    } catch (erro) {-
+    } catch (erro) {
         res.status(500).send(`Erro: ${erro.message}`)
     }
 })
 
-router.post('/supervisao', async (req, res) => {
+funcionariosRouter.post('/supervisores', async (req, res) => {
     try {
-        const obj = JSON.parse(req.body)
-        await funcionariosDataAcess.cadastraSupervisor(obj)
+        await dataAccessFuncionarios.cadastraSupervisor(req.body)
         res.status(200).send('Supervisor cadastrado com sucesso!')
     } catch (erro) {
         res.status(500).send(`Erro: ${erro.message}`)
     }
 })
+
+funcionariosRouter.get('/supervisores', async (req, res) => {
+    try {
+        const resposta = await dataAccessFuncionarios.mostraSupervisores()
+        res.status(200).json(resposta)
+    } catch (erro) {
+        res.status(500).send(`Erro: ${erro.message}`)
+    }
+})
+
+module.exports = {
+    funcionariosRouter
+}

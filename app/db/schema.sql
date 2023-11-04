@@ -4,7 +4,7 @@ COMMENT ON SCHEMA public IS 'standard public schema';
 
 -- DROP SEQUENCE public.autores_id_autor_seq;
 
-CREATE SEQUENCE public.autores_id_autor_seq
+CREATE SEQUENCE public.autores_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -14,12 +14,12 @@ CREATE SEQUENCE public.autores_id_autor_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.autores_id_autor_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.autores_id_autor_seq TO postgres;
+ALTER SEQUENCE public.autores_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.autores_seq TO postgres;
 
 -- DROP SEQUENCE public.categorias_id_categoria_seq;
 
-CREATE SEQUENCE public.categorias_id_categoria_seq
+CREATE SEQUENCE public.categorias_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -29,12 +29,12 @@ CREATE SEQUENCE public.categorias_id_categoria_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.categorias_id_categoria_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.categorias_id_categoria_seq TO postgres;
+ALTER SEQUENCE public.categorias_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.categorias_seq TO postgres;
 
--- DROP SEQUENCE public.emprestimos_id_emprestimo_seq;
+-- DROP SEQUENCE public.emprestimos_seq;
 
-CREATE SEQUENCE public.emprestimos_id_emprestimo_seq
+CREATE SEQUENCE public.emprestimos_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -44,12 +44,12 @@ CREATE SEQUENCE public.emprestimos_id_emprestimo_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.emprestimos_id_emprestimo_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.emprestimos_id_emprestimo_seq TO postgres;
+ALTER SEQUENCE public.emprestimos_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.emprestimos_seq TO postgres;
 
 -- DROP SEQUENCE public.emprestimos_tem_exemplares_id_seq;
 
-CREATE SEQUENCE public.emprestimos_tem_exemplares_id_seq
+CREATE SEQUENCE public.emprestimos_tem_exemplares_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -59,12 +59,12 @@ CREATE SEQUENCE public.emprestimos_tem_exemplares_id_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.emprestimos_tem_exemplares_id_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.emprestimos_tem_exemplares_id_seq TO postgres;
+ALTER SEQUENCE public.emprestimos_tem_exemplares_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.emprestimos_tem_exemplares_seq TO postgres;
 
 -- DROP SEQUENCE public.exemplares_id_exemplar_seq;
 
-CREATE SEQUENCE public.exemplares_id_exemplar_seq
+CREATE SEQUENCE public.exemplares_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -74,12 +74,12 @@ CREATE SEQUENCE public.exemplares_id_exemplar_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.exemplares_id_exemplar_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.exemplares_id_exemplar_seq TO postgres;
+ALTER SEQUENCE public.exemplares_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.exemplares_seq TO postgres;
 
 -- DROP SEQUENCE public.funcionarios_id_funcionarios_seq;
 
-CREATE SEQUENCE public.funcionarios_id_funcionarios_seq
+CREATE SEQUENCE public.funcionarios_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -89,8 +89,8 @@ CREATE SEQUENCE public.funcionarios_id_funcionarios_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.funcionarios_id_funcionarios_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.funcionarios_id_funcionarios_seq TO postgres;
+ALTER SEQUENCE public.funcionarios_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.funcionarios_seq TO postgres;
 
 -- DROP SEQUENCE public.funcionarios_tem_telefones_id_seq;
 
@@ -109,7 +109,7 @@ GRANT ALL ON SEQUENCE public.funcionarios_id_funcionarios_seq TO postgres;
 
 -- DROP SEQUENCE public.livros_id_livro_seq;
 
-CREATE SEQUENCE public.livros_id_livro_seq
+CREATE SEQUENCE public.livros_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -119,27 +119,12 @@ CREATE SEQUENCE public.livros_id_livro_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.livros_id_livro_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.livros_id_livro_seq TO postgres;
+ALTER SEQUENCE public.livros_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.livros_seq TO postgres;
 
 -- DROP SEQUENCE public.livros_tem_autores_id_seq;
 
--- CREATE SEQUENCE public.livros_tem_autores_id_seq
---	INCREMENT BY 1
---	MINVALUE 1
---	MAXVALUE 2147483647
---	START 1
---	CACHE 1
---	NO CYCLE;
-
--- Permissions
-
--- ALTER SEQUENCE public.livros_tem_autores_id_seq OWNER TO postgres;
--- GRANT ALL ON SEQUENCE public.livros_tem_autores_id_seq TO postgres;
-
--- DROP SEQUENCE public.multas_id_multa_seq;
-
-CREATE SEQUENCE public.multas_id_multa_seq
+CREATE SEQUENCE public.livros_tem_autores_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -149,8 +134,23 @@ CREATE SEQUENCE public.multas_id_multa_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.multas_id_multa_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.multas_id_multa_seq TO postgres;
+ALTER SEQUENCE public.livros_tem_autores_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.livros_tem_autores_seq TO postgres;
+
+-- DROP SEQUENCE public.multas_id_multa_seq;
+
+CREATE SEQUENCE public.multas_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+-- Permissions
+
+ALTER SEQUENCE public.multas_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.multas_seq TO postgres;
 
 -- DROP SEQUENCE public.reservas_id_exemplar_seq;
 
@@ -169,7 +169,7 @@ GRANT ALL ON SEQUENCE public.reservas_id_exemplar_seq TO postgres;
 
 -- DROP SEQUENCE public.reservas_id_reserva_seq;
 
-CREATE SEQUENCE public.reservas_id_reserva_seq
+CREATE SEQUENCE public.reservas_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -179,12 +179,12 @@ CREATE SEQUENCE public.reservas_id_reserva_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.reservas_id_reserva_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.reservas_id_reserva_seq TO postgres;
+ALTER SEQUENCE public.reservas_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.reservas_seq TO postgres;
 
 -- DROP SEQUENCE public.supervisao_id_supervisao_seq;
 
-CREATE SEQUENCE public.supervisao_id_supervisao_seq
+CREATE SEQUENCE public.supervisao_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -194,8 +194,8 @@ CREATE SEQUENCE public.supervisao_id_supervisao_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.supervisao_id_supervisao_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.supervisao_id_supervisao_seq TO postgres;
+ALTER SEQUENCE public.supervisao_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.supervisao_seq TO postgres;
 
 -- DROP SEQUENCE public.telefones_id_telefone_seq;
 
@@ -214,7 +214,7 @@ GRANT ALL ON SEQUENCE public.supervisao_id_supervisao_seq TO postgres;
 
 -- DROP SEQUENCE public.usuarios_id_usuario_seq;
 
-CREATE SEQUENCE public.usuarios_id_usuario_seq
+CREATE SEQUENCE public.usuarios_seq
 	INCREMENT BY 1
 	MINVALUE 1
 	MAXVALUE 2147483647
@@ -224,8 +224,8 @@ CREATE SEQUENCE public.usuarios_id_usuario_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.usuarios_id_usuario_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.usuarios_id_usuario_seq TO postgres;
+ALTER SEQUENCE public.usuarios_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.usuarios_seq TO postgres;
 
 -- DROP SEQUENCE public.usuarios_tem_telefone_id_seq;
 
@@ -247,16 +247,15 @@ GRANT ALL ON SEQUENCE public.usuarios_id_usuario_seq TO postgres;
 
 -- DROP TABLE public.autores;
 
--- CREATE TABLE public.autores (
---	id_autor serial4 NOT NULL,
---	nome varchar(256) NULL,
---	CONSTRAINT autores_pk PRIMARY KEY (id_autor)
---);
+CREATE TABLE public.autores (
+	nome_autor varchar(256) NOT NULL,
+	CONSTRAINT autores_pk PRIMARY KEY (nome_autor)
+);
 
 -- Permissions
 
--- ALTER TABLE public.autores OWNER TO postgres;
--- GRANT ALL ON TABLE public.autores TO postgres;
+ALTER TABLE public.autores OWNER TO postgres;
+GRANT ALL ON TABLE public.autores TO postgres;
 
 
 -- public.categorias definition
@@ -286,11 +285,11 @@ GRANT ALL ON TABLE public.categorias TO postgres;
 -- DROP TABLE public.funcionarios;
 
 CREATE TABLE public.funcionarios (
-	id_funcionario int4 NOT NULL DEFAULT nextval('funcionarios_id_funcionarios_seq'::regclass),
+	id_funcionario int4 NOT NULL,
 	nome varchar(256) NOT NULL,
-	cpf bpchar(11) NOT NULL,
+	cpf char(11) NOT NULL,
 	email varchar(256) NOT NULL,
-	telefones bchar(11)[] NOT NULL,
+	telefones char(11)[] NOT NULL,
 	tipo_funcionario varchar(256) NOT NULL,
 	CONSTRAINT funcionarios_pk PRIMARY KEY (id_funcionario)
 );
@@ -309,7 +308,7 @@ GRANT ALL ON TABLE public.funcionarios TO postgres;
 
 -- CREATE TABLE public.telefones (
 --	id_telefone serial4 NOT NULL,
---	telefone bpchar(11) NULL,
+--	telefone char(11) NULL,
 --	CONSTRAINT telefones_pk PRIMARY KEY (id_telefone)
 --);
 
@@ -350,12 +349,12 @@ CREATE TABLE public.livros (
 	id_livro serial4 NOT NULL,
 	titulo varchar(256) NOT NULL,
 	editora varchar(256) NOT NULL,
-	isbn bpchar(13) NOT NULL,
-	autores varchar(256)[] NOT NULL,
+	isbn char(13) NOT NULL,
 	id_funcionario int4 NOT NULL,
 	CONSTRAINT livros_pk PRIMARY KEY (id_livro),
 	CONSTRAINT livros_fk FOREIGN KEY (id_funcionario) REFERENCES public.funcionarios(id_funcionario) ON DELETE SET NULL ON UPDATE CASCADE
 );
+
 
 -- Permissions
 
@@ -369,19 +368,19 @@ GRANT ALL ON TABLE public.livros TO postgres;
 
 -- DROP TABLE public.livros_tem_autores;
 
--- CREATE TABLE public.livros_tem_autores (
---	id serial4 NOT NULL,
---	id_livro int4 NOT NULL,
---	id_autor int4 NOT NULL,
---	CONSTRAINT livros_tem_autores_pk PRIMARY KEY (id),
---	CONSTRAINT livros_tem_autores_fk FOREIGN KEY (id_livro) REFERENCES public.livros(id_livro) ON DELETE CASCADE ON UPDATE CASCADE,
---	CONSTRAINT livros_tem_autores_fk_1 FOREIGN KEY (id_autor) REFERENCES public.autores(id_autor) ON DELETE RESTRICT ON UPDATE CASCADE
---);
+CREATE TABLE public.livros_tem_autores (
+	id serial4 NOT NULL,
+	id_livro int4 NOT NULL,
+	nome_autor varchar(260) NOT NULL,
+	CONSTRAINT livros_tem_autores_pk PRIMARY KEY (id),
+	CONSTRAINT livros_tem_autores_fk FOREIGN KEY (id_livro) REFERENCES public.livros(id_livro) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT livros_tem_autores_fk_1 FOREIGN KEY (nome_autor) REFERENCES public.autores(nome_autor) ON DELETE RESTRICT ON UPDATE CASCADE
+);
 
 -- Permissions
 
--- ALTER TABLE public.livros_tem_autores OWNER TO postgres;
--- GRANT ALL ON TABLE public.livros_tem_autores TO postgres;
+ALTER TABLE public.livros_tem_autores OWNER TO postgres;
+GRANT ALL ON TABLE public.livros_tem_autores TO postgres;
 
 
 -- public.supervisao definition
@@ -414,10 +413,10 @@ GRANT ALL ON TABLE public.supervisao TO postgres;
 CREATE TABLE public.usuarios (
 	id_usuario serial4 NOT NULL,
 	nome varchar(256) NOT NULL,
-	cpf bpchar(11) NOT NULL,
+	cpf char(11) NOT NULL,
 	email varchar(256) NOT NULL,
 	endereco varchar(256) NOT NULL,
-	telefones bpchar(11)[] NOT NULL,
+	telefones char(11)[] NOT NULL,
 	id_categoria int4 NOT NULL,
 	CONSTRAINT usuarios_pk PRIMARY KEY (id_usuario),
 	CONSTRAINT usuarios_fk FOREIGN KEY (id_categoria) REFERENCES public.categorias(id_categoria) ON DELETE CASCADE ON UPDATE CASCADE
@@ -452,38 +451,9 @@ GRANT ALL ON TABLE public.usuarios TO postgres;
 
 -- public.emprestimos definition
 
--- Drop table
-
--- DROP TABLE public.emprestimos;
-
-CREATE TABLE public.emprestimos (
-	id_emprestimo serial4 NOT NULL,
-	data_emprestimo date NOT NULL,
-	num_renovacoes int4 NOT NULL,
-	data_devolucao date NOT NULL,
-	id_usuario int4 NOT NULL,
-	id_exemplar int4 NOT NULL,
-	resolvido bool NOT NULL DEFAULT FALSE,
-	CONSTRAINT emprestimos_pk PRIMARY KEY (id_emprestimo),
-	CONSTRAINT emprestimos_fk FOREIGN KEY (id_usuario) REFERENCES public.usuarios(id_usuario) ON DELETE SET NULL ON UPDATE SET NULL
-	CONSTRAINT emprestimos_fK2 FOREIGN KEY (id_exemplar) REFERENCES public.exemplares(id_exemplar) ON DELETE SET NULL ON UPDATE SET NULL
-);
-
--- Permissions
-
-ALTER TABLE public.emprestimos OWNER TO postgres;
-GRANT ALL ON TABLE public.emprestimos TO postgres;
-
-
--- public.exemplares definition
-
--- Drop table
-
--- DROP TABLE public.exemplares;
-
 CREATE TABLE public.exemplares (
 	id_exemplar serial4 NOT NULL,
-	-- num_exemplar int4 NOT NULL,
+	num_exemplar int4 NOT NULL,
 	colecao varchar(256) NOT NULL,
 	disponivel bool NOT NULL,
 	id_livro int4 NOT NULL,
@@ -498,6 +468,26 @@ CREATE TABLE public.exemplares (
 ALTER TABLE public.exemplares OWNER TO postgres;
 GRANT ALL ON TABLE public.exemplares TO postgres;
 
+CREATE TABLE public.emprestimos (
+	id_emprestimo serial4 NOT NULL,
+	data_emprestimo date NOT NULL,
+	num_renovacoes int4 NOT NULL,
+	data_devolucao date NOT NULL,
+	id_usuario int4 NOT NULL,
+	id_exemplar int4 NOT NULL,
+	resolvido bool NOT NULL DEFAULT FALSE,
+	CONSTRAINT emprestimos_pk PRIMARY KEY (id_emprestimo),
+	CONSTRAINT emprestimos_fk FOREIGN KEY (id_usuario) REFERENCES public.usuarios(id_usuario) ON DELETE SET NULL ON UPDATE SET NULL,
+	CONSTRAINT emprestimos_fK2 FOREIGN KEY (id_exemplar) REFERENCES public.exemplares(id_exemplar) ON DELETE SET NULL ON UPDATE SET NULL
+);
+
+-- Permissions
+
+ALTER TABLE public.emprestimos OWNER TO postgres;
+GRANT ALL ON TABLE public.emprestimos TO postgres;
+
+
+-- public.exemplares definition
 
 -- public.multas definition
 
@@ -543,6 +533,12 @@ ALTER TABLE public.reservas OWNER TO postgres;
 GRANT ALL ON TABLE public.reservas TO postgres;
 
 
+-- Categorias Hardcoded
+INSERT INTO categorias VALUES (1, 'Aluno', 15, 3);
+INSERT INTO categorias VALUES (2, 'Aluno PG', 30, 4);
+INSERT INTO categorias VALUES (3, 'Professor', 30, 5);
+INSERT INTO categorias VALUES (4, 'Professor PG', 90, 6);
+
 -- public.emprestimos_tem_exemplares definition
 
 -- Drop table
@@ -566,7 +562,7 @@ GRANT ALL ON TABLE public.reservas TO postgres;
 
 
 CREATE TABLE constantes (
-	max_renovacoes int;
+	max_renovacoes int
 );
 
 INSERT INTO constantes VALUES (3);

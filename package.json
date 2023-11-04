@@ -4,7 +4,7 @@
   "description": "Sistema de gerenciamento de biblioteca desenvolvido como trabalho para a disciplina de banco de dados dois.",
   "main": "index.js",
   "scripts": {
-    "ligar": "node index.js"
+    "start": "node index.js"
   },
   "author": "",
   "license": "MIT",
