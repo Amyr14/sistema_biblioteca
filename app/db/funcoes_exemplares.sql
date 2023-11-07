@@ -8,6 +8,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
+-- Testada
 CREATE OR REPLACE FUNCTION identifica_usuario_com_exemplar(p_id_exemplar int) RETURNS json AS
 $$
 DECLARE
@@ -28,6 +29,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
+-- Testada
 CREATE OR REPLACE FUNCTION mostra_exemplares() RETURNS json AS
 $$
 DECLARE

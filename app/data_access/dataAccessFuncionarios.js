@@ -18,9 +18,9 @@ async function get(id) {
 
 async function cadastraFuncionario(obj) {
     const cliente = await pool.connect()
-    const { nome, cpf, email, tipo_funcionario, telefones } = obj
-    const query = 'SELECT cadastra_funcionario($1, $2, $3, $4, $5)'
-    await cliente.query(query, [nome, cpf, email, telefones, tipo_funcionario])
+    const { nome, senha, cpf, email, tipo_funcionario, telefones } = obj
+    const query = 'SELECT cadastra_funcionario($1, $2, $3, $4, $5, $6)'
+    await cliente.query(query, [nome, senha, cpf, email, telefones, tipo_funcionario])
     cliente.release()
 }
 

@@ -4,6 +4,17 @@ COMMENT ON SCHEMA public IS 'standard public schema';
 
 -- DROP SEQUENCE public.autores_id_autor_seq;
 
+CREATE SEQUENCE public.reserva_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+ALTER SEQUENCE public.reserva_seq OWNER TO postgres;
+GRANT ALL ON SEQUENCE public.reserva_seq TO postgres;
+
 CREATE SEQUENCE public.autores_seq
 	INCREMENT BY 1
 	MINVALUE 1
@@ -287,6 +298,7 @@ GRANT ALL ON TABLE public.categorias TO postgres;
 CREATE TABLE public.funcionarios (
 	id_funcionario int4 NOT NULL,
 	nome varchar(256) NOT NULL,
+	senha varchar(256) NOT NULL,
 	cpf char(11) NOT NULL,
 	email varchar(256) NOT NULL,
 	telefones char(11)[] NOT NULL,
@@ -413,6 +425,7 @@ GRANT ALL ON TABLE public.supervisao TO postgres;
 CREATE TABLE public.usuarios (
 	id_usuario serial4 NOT NULL,
 	nome varchar(256) NOT NULL,
+	senha varchar(256) NOT NULL,
 	cpf char(11) NOT NULL,
 	email varchar(256) NOT NULL,
 	endereco varchar(256) NOT NULL,

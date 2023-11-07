@@ -24,8 +24,16 @@ async function cadastraLivro(obj) {
     cliente.release()
 }
 
+async function mostraAutores() {
+    const cliente = await pool.connect()
+    const query = 'SELECT mostra_autores()'
+    const resposta = await cliente.query(query)
+    return resposta.rows.flatMap(item => item.mostra_autores)
+}
+
 module.exports = {
     getAll,
     get,
     cadastraLivro,
+    mostraAutores
 }

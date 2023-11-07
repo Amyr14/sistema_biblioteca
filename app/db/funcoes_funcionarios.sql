@@ -1,8 +1,8 @@
-CREATE OR REPLACE FUNCTION cadastra_funcionario(nome varchar(256), cpf char(11), email varchar(256), telefones char(11)[], tipo_funcionario varchar(256)) RETURNS void AS
+CREATE OR REPLACE FUNCTION cadastra_funcionario(nome varchar(256), senha varchar(256), cpf char(11), email varchar(256), telefones char(11)[], tipo_funcionario varchar(256)) RETURNS void AS
 $$
 BEGIN
     INSERT INTO funcionarios
-    VALUES (NEXTVAL('funcionarios_seq'), nome, cpf, email, telefones, tipo_funcionario);
+    VALUES (NEXTVAL('funcionarios_seq'), nome, senha, cpf, email, telefones, tipo_funcionario);
 END;
 $$
 LANGUAGE plpgsql;
