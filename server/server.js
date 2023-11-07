@@ -1,28 +1,21 @@
 require('dotenv').config() // Configura variáveis de ambiente
-const express = require('express')
-const bodyParser = require('body-parser')
-const { usuariosRouter } = require('./src/roteadores/usuariosRouter')
-const { livrosRouter } = require('./src/roteadores/livrosRouter')
-const { funcionariosRouter } = require('./src/roteadores/funcionariosRouter')
-const { exemplaresRouter } = require('./src/roteadores/exemplaresRouter')
-const { login } = require('./src/data_access/dataAccessAuxiliares')
-const port = process.env.APP_PORT
+console.log(__dirname)
+import express from 'express'
+import { json } from 'body-parser'
+import { usuariosRouter } from './src/roteadores/usuariosRouter'
+import { livrosRouter } from './src/roteadores/livrosRouter'
+import { funcionariosRouter } from './src/roteadores/funcionariosRouter'
+import { exemplaresRouter } from './src/roteadores/exemplaresRouter'
 const app = express()
+const port = process.env.APPPORT
 
-app.use(bodyParser.json()) // Parseia todo req.body para JSON
-app.get('/', (req, res) => {
-    res.send('API operacional')
+app.use(json()) // Parseia todo req.body para JSON
+app.use('/api/usuarios', usuariosRouter)
+app.use('/api/livros', livrosRouter)
+app.use('/api/exemplares', exemplaresRouter)
+app.use('/api/funcionarios', funcionariosRouter)
+app.get('/api', (req, res) => {
+    res.status(200).send('API operacional')
 })
-app.get('/login', async (req, res) => {
-    try {
-        const resposta = await login(req.body)
-        res.status(200).json(resposta)
-    } catch(erro) {
-        res.status(500).send(`Erro: ${erro.message}`)
-    }
-})
-app.use('/usuarios', usuariosRouter)
-app.use('/livros', livrosRouter)
-app.use('/exemplares', exemplaresRouter)
-app.use('/funcionarios', funcionariosRouter)
+
 app.listen(port, () => {console.log(`Servidor ouvindo na porta ${port}`)})
