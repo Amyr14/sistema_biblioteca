@@ -1,0 +1,18 @@
+.card_form {
+  display: block;
+  max-width: 80%;
+  align-items: center;
+  text-align: center;
+  margin-left: 10%;
+  margin-top: 10%;
+}
+
+.full_width {
+  width: 100%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

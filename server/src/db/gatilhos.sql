@@ -211,3 +211,23 @@ CREATE OR REPLACE trigger verifica_auto_supervisao_g
 BEFORE INSERT OR UPDATE ON supervisao
 FOR EACH ROW
 EXECUTE PROCEDURE verifica_auto_supervisao();
+
+CREATE OR REPLACE FUNCTION impede_emprestimo_quando_reservado() RETURNS trigger AS
+$$
+DECLARE
+    hoje date;
+BEGIN
+    hoje := NOW()::date;
+
+    IF EXISTS (SELECT * 
+               FROM reservas r
+               WHERE NEW.id_exemplar = r.id_exemplar AND hoje = r.data_reserva AND r.ativa = TRUE)
+    THEN
+        RAISE EXCEPTION 'O exemplar foi reservado até o fim do dia.';
+    END IF;
+
+RETURN NEW;
+
+END;
+$$
+LANGUAGE plpgsql;

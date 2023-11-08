@@ -13,14 +13,14 @@ async function get(id) {
     const query = 'SELECT mostra_usuario($1)'
     const resposta = await cliente.query(query, [id])
     cliente.release()
-    return resposta.rows.map(item => item.mostra_usuario)
+    return resposta.rows.flatMap(item => item.mostra_usuario)
 }
 
 async function cadastraUsuario(obj) {
     const cliente = await pool.connect()
-    const { nome, cpf, email, endereco, id_categoria, telefones } = obj
-    const query = 'SELECT cadastra_usuario($1, $2, $3, $4, $5, $6)'
-    await cliente.query(query, [nome, cpf, email, endereco, telefones, id_categoria])
+    const { nome, senha, cpf, email, endereco, id_categoria, telefones } = obj
+    const query = 'SELECT cadastra_usuario($1, $2, $3, $4, $5, $6, $7)'
+    await cliente.query(query, [nome, senha, cpf, email, endereco, telefones, id_categoria])
     cliente.release()
 }
 
@@ -80,6 +80,30 @@ async function mostraEmprestimosUsuario(id) {
     return resposta.rows.flatMap(item => item.mostra_emprestimos_usuario)
 }
 
+async function mostraReservasUsuario(id) {
+    const cliente = await pool.connect()
+    const query = 'SELECT mostra_reservas_usuario($1)'
+    const resposta = await cliente.query(query, [id])
+    cliente.release()
+    return resposta.rows.flatMap(item => item.mostra_reservas_usuario)
+}
+
+async function realizaReserva(obj) {
+    const cliente = await pool.connect()
+    const { id_usuario, id_exemplar } = obj
+    const query = 'SELECT reserva_exemplar($1, $2)'
+    await cliente.query(query, [id_usuario, id_exemplar])
+    cliente.release()
+}
+
+async function cancelaReserva(obj) {
+    const cliente = await pool.connect()
+    const { id_reserva } = obj
+    const query = 'SELECT cancela_reserva($1)'
+    await cliente.query(query, [id_reserva])
+    cliente.release()
+}
+
 module.exports = {
     getAll,
     get,
@@ -90,5 +114,7 @@ module.exports = {
     resolveEmprestimo,
     renovaEmprestimo,
     mostraEmprestimosUsuario,
-    mostraMultasUsuario
+    mostraMultasUsuario,
+    mostraReservasUsuario,
+    cancelaReserva
 }

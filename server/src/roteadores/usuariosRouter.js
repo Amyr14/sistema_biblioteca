@@ -1,5 +1,6 @@
 const express = require('express')
 const dataAccessUsuarios = require('../data_access/dataAccessUsuarios')
+const { mandarEmail } = require('../auxiliares/email')
 const usuariosRouter = express.Router()
 
 usuariosRouter.get('/', async (req, res) => {
@@ -59,6 +60,24 @@ usuariosRouter.post('/:id_usuario/reservas', async (req, res) => {
   }
 })
 
+usuariosRouter.get('/:id_usuario/reservas', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id_usuario)
+    const resposta = await dataAccessUsuarios.mostraReservasUsuario(id)
+  } catch (erro) {
+    res.status(500).send(`Erro: ${erro.message}`)
+  }
+})
+
+usuariosRouter.put('/:id_usuario/reservas', async (req, res) => {
+  try {
+    await dataAccessUsuarios.cancelaReserva(req.body)
+    res.status(200).send('Reserva cancelada com sucesso!')
+  } catch (erro) {
+    res.status(500).send(`Erro: ${erro.message}`)
+  }
+})
+
 usuariosRouter.put('/:id_usuario/emprestimos', async (req, res) => {
   try {
     const { tipo } = req.body
@@ -103,4 +122,16 @@ usuariosRouter.put('/:id_usuario/multas', async (req, res) => {
   }
 })
 
-module.exports = { usuariosRouter }
+usuariosRouter.get('/:id_usuario/esqueceu_senha', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id_usuario)
+    const resposta = await dataAccessUsuarios.get(id)
+    const { email, senha } = resposta[0]
+    mandarEmail(email, senha)
+    res.status(200).send(`Senha enviada para ${email}`)
+  } catch (erro) {
+    res.status(500).send(`Erro: ${erro.message}`)
+  }
+})
+
+module.exports = usuariosRouter; 

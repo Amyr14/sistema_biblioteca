@@ -1,6 +1,19 @@
-COMMENT ON SCHEMA public IS 'Esquema da biblioteca';
+-- DROP SCHEMA public;
+
+COMMENT ON SCHEMA public IS 'standard public schema';
 
 -- DROP SEQUENCE public.autores_id_autor_seq;
+
+CREATE SEQUENCE public.reserva_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+ALTER SEQUENCE public.reserva_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.reserva_seq TO usuario_biblioteca;
 
 CREATE SEQUENCE public.autores_seq
 	INCREMENT BY 1
@@ -285,6 +298,7 @@ GRANT ALL ON TABLE public.categorias TO usuario_biblioteca;
 CREATE TABLE public.funcionarios (
 	id_funcionario int4 NOT NULL,
 	nome varchar(256) NOT NULL,
+	senha varchar(256) NOT NULL,
 	cpf char(11) NOT NULL,
 	email varchar(256) NOT NULL,
 	telefones char(11)[] NOT NULL,
@@ -411,6 +425,7 @@ GRANT ALL ON TABLE public.supervisao TO usuario_biblioteca;
 CREATE TABLE public.usuarios (
 	id_usuario serial4 NOT NULL,
 	nome varchar(256) NOT NULL,
+	senha varchar(256) NOT NULL,
 	cpf char(11) NOT NULL,
 	email varchar(256) NOT NULL,
 	endereco varchar(256) NOT NULL,
@@ -569,8 +584,6 @@ INSERT INTO constantes VALUES (3);
 
 GRANT ALL ON SCHEMA public TO pg_database_owner;
 GRANT USAGE ON SCHEMA public TO public;
-
-
 -- Gatilho que impede o empréstimo de um usuário que atingiu seu limite
 CREATE OR REPLACE FUNCTION verifica_limite() RETURNS trigger AS
 $$
@@ -784,7 +797,25 @@ BEFORE INSERT OR UPDATE ON supervisao
 FOR EACH ROW
 EXECUTE PROCEDURE verifica_auto_supervisao();
 
+CREATE OR REPLACE FUNCTION impede_emprestimo_quando_reservado() RETURNS trigger AS
+$$
+DECLARE
+    hoje date;
+BEGIN
+    hoje := NOW()::date;
 
+    IF EXISTS (SELECT * 
+               FROM reservas r
+               WHERE NEW.id_exemplar = r.id_exemplar AND hoje = r.data_reserva AND r.ativa = TRUE)
+    THEN
+        RAISE EXCEPTION 'O exemplar foi reservado até o fim do dia.';
+    END IF;
+
+RETURN NEW;
+
+END;
+$$
+LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION mostra_usuarios() RETURNS json AS
 $$
 DECLARE
@@ -898,11 +929,11 @@ $$
 LANGUAGE plpgsql;
 
 -- Testada
-CREATE OR REPLACE FUNCTION cadastra_usuario(nome varchar(256), cpf char(11), email varchar(256), endereco varchar(256), telefones char(11)[], id_categoria int) RETURNS void AS
+CREATE OR REPLACE FUNCTION cadastra_usuario(nome varchar(256), senha varchar(256), cpf char(11), email varchar(256), endereco varchar(256), telefones char(11)[], id_categoria int) RETURNS void AS
 $$
 BEGIN
     INSERT INTO usuarios 
-    VALUES (NEXTVAL('usuarios_seq'), nome, cpf, email, endereco, telefones, id_categoria);
+    VALUES (NEXTVAL('usuarios_seq'), nome, senha, cpf, email, endereco, telefones, id_categoria);
 END;
 $$
 LANGUAGE plpgsql;
@@ -985,7 +1016,67 @@ END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION cadastra_livro(titulo varchar(256), editora varchar(256), isbn char(13), p_autores varchar(256)[], id_funcionario int) RETURNS void AS
+CREATE OR REPLACE FUNCTION reserva_exemplar(p_id_usuario int, p_id_exemplar int) RETURNS void AS
+$$
+DECLARE
+    hoje date;
+    data_reserva date;
+BEGIN
+    hoje := NOW()::date;
+
+    IF (SELECT disponivel FROM exemplares WHERE id_exemplar = p_id_exemplar) THEN
+        INSERT INTO reserva VALUES (NEXTVAL('reserva_seq'), hoje, TRUE, p_id_usuario, p_id_exemplar);
+
+    ELSIF EXISTS (SELECT data_devolucao INTO data_reserva 
+                  FROM emprestimos e
+                  WHERE hoje < data_devolucao AND id_exemplar = p_id_exemplar)
+    THEN
+        INSERT INTO reserva VALUES (NEXTVAL('reserva_seq'), data_reserva, TRUE, p_id_usuario, p_id_exemplar);
+
+    ELSE
+        RAISE EXCEPTION 'O exemplar não está disponível.';
+
+    END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION mostra_reservas_usuario(p_id_usuario int) RETURNS json AS
+$$
+DECLARE
+    resultado json;
+BEGIN
+    SELECT JSON_AGG(r.*) INTO resultado
+    FROM reservas r
+    WHERE id_usuario = p_id_usuario;
+
+    RETURN resultado;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION cancela_reserva(p_id_reserva int) RETURNS void AS
+$$
+BEGIN
+    UPDATE reservas
+    SET ativa = FALSE
+    WHERE id_reserva = p_id_reserva;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION timeout_reservas() RETURNS void as
+$$
+DECLARE
+    hoje date;
+BEGIN
+    hoje := NOW()::date;
+    UPDATE reservas
+    SET ativa = FALSE
+    WHERE data_reserva = hoje - 1;
+END;
+$$
+LANGUAGE plpgsql;CREATE OR REPLACE FUNCTION cadastra_livro(titulo varchar(256), editora varchar(256), isbn char(13), p_autores varchar(256)[], id_funcionario int) RETURNS void AS
 $$
 DECLARE
     i int;
@@ -1028,19 +1119,34 @@ $$
 DECLARE
     resultado json;
 BEGIN
-    SELECT JSON_AGG(l.*) INTO resultado
-    FROM livros l;
+    SELECT JSON_AGG(t.*) INTO resultado
+    FROM (SELECT l.*, ARRAY_AGG(lta.nome_autor) AS autores
+          FROM livros l
+          JOIN livros_tem_autores lta
+          ON l.id_livro = lta.id_livro
+          GROUP BY l.id_livro) t;
 
     RETURN resultado;
 END;
 $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION cadastra_funcionario(nome varchar(256), cpf char(11), email varchar(256), telefones char(11)[], tipo_funcionario varchar(256)) RETURNS void AS
+CREATE OR REPLACE FUNCTION mostra_autores() RETURNS json AS
+$$
+DECLARE
+    resultado json;
+BEGIN
+    SELECT JSON_AGG(a.*) INTO resultado
+    FROM autores a;
+
+    RETURN resultado;
+END;
+$$
+LANGUAGE plpgsql;CREATE OR REPLACE FUNCTION cadastra_funcionario(nome varchar(256), senha varchar(256), cpf char(11), email varchar(256), telefones char(11)[], tipo_funcionario varchar(256)) RETURNS void AS
 $$
 BEGIN
     INSERT INTO funcionarios
-    VALUES (NEXTVAL('funcionarios_seq'), nome, cpf, email, telefones, tipo_funcionario);
+    VALUES (NEXTVAL('funcionarios_seq'), nome, senha, cpf, email, telefones, tipo_funcionario);
 END;
 $$
 LANGUAGE plpgsql;
@@ -1095,9 +1201,7 @@ BEGIN
     RETURN resultado;
 END;
 $$
-LANGUAGE plpgsql;
-
--- Revisar essa função
+LANGUAGE plpgsql;-- Revisar essa função
 CREATE OR REPLACE FUNCTION cadastra_exemplar(id_livro int, num_exemplar int, colecao varchar(256), id_funcionario int) RETURNS void AS
 $$
 BEGIN
@@ -1107,6 +1211,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
+-- Testada
 CREATE OR REPLACE FUNCTION identifica_usuario_com_exemplar(p_id_exemplar int) RETURNS json AS
 $$
 DECLARE
@@ -1127,6 +1232,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
+-- Testada
 CREATE OR REPLACE FUNCTION mostra_exemplares() RETURNS json AS
 $$
 DECLARE
@@ -1136,6 +1242,32 @@ BEGIN
     FROM exemplares e;
 
     RETURN resultado;
+END;
+$$
+LANGUAGE plpgsql;CREATE OR REPLACE FUNCTION login(p_cpf char(11), p_senha varchar(256)) RETURNS json AS
+$$
+DECLARE
+	resultado json;
+BEGIN
+	SELECT ROW_TO_JSON(u.*) INTO resultado
+	FROM (SELECT id_usuario
+		  FROM usuarios
+		  WHERE cpf = p_cpf AND senha = p_senha) u;
+		  
+	IF FOUND THEN
+		RETURN resultado;
+	END IF;
+	
+	SELECT ROW_TO_JSON(f.*) INTO resultado
+	FROM (SELECT id_funcionario
+		  FROM funcionarios
+		  WHERE cpf = p_cpf AND senha = p_senha) f;
+	
+	IF FOUND THEN
+		RETURN resultado;
+	END IF;
+	
+	RETURN resultado;
 END;
 $$
 LANGUAGE plpgsql;

@@ -112,11 +112,11 @@ $$
 LANGUAGE plpgsql;
 
 -- Testada
-CREATE OR REPLACE FUNCTION cadastra_usuario(nome varchar(256), cpf char(11), email varchar(256), endereco varchar(256), telefones char(11)[], id_categoria int) RETURNS void AS
+CREATE OR REPLACE FUNCTION cadastra_usuario(nome varchar(256), senha varchar(256), cpf char(11), email varchar(256), endereco varchar(256), telefones char(11)[], id_categoria int) RETURNS void AS
 $$
 BEGIN
     INSERT INTO usuarios 
-    VALUES (NEXTVAL('usuarios_seq'), nome, cpf, email, endereco, telefones, id_categoria);
+    VALUES (NEXTVAL('usuarios_seq'), nome, senha, cpf, email, endereco, telefones, id_categoria);
 END;
 $$
 LANGUAGE plpgsql;
@@ -199,4 +199,64 @@ END;
 $$
 LANGUAGE plpgsql;
 
-DROP FUNCTION mostra_emprestimos_usuario();
+CREATE OR REPLACE FUNCTION reserva_exemplar(p_id_usuario int, p_id_exemplar int) RETURNS void AS
+$$
+DECLARE
+    hoje date;
+    data_reserva date;
+BEGIN
+    hoje := NOW()::date;
+
+    IF (SELECT disponivel FROM exemplares WHERE id_exemplar = p_id_exemplar) THEN
+        INSERT INTO reserva VALUES (NEXTVAL('reserva_seq'), hoje, TRUE, p_id_usuario, p_id_exemplar);
+
+    ELSIF EXISTS (SELECT data_devolucao INTO data_reserva 
+                  FROM emprestimos e
+                  WHERE hoje < data_devolucao AND id_exemplar = p_id_exemplar)
+    THEN
+        INSERT INTO reserva VALUES (NEXTVAL('reserva_seq'), data_reserva, TRUE, p_id_usuario, p_id_exemplar);
+
+    ELSE
+        RAISE EXCEPTION 'O exemplar não está disponível.';
+
+    END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION mostra_reservas_usuario(p_id_usuario int) RETURNS json AS
+$$
+DECLARE
+    resultado json;
+BEGIN
+    SELECT JSON_AGG(r.*) INTO resultado
+    FROM reservas r
+    WHERE id_usuario = p_id_usuario;
+
+    RETURN resultado;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION cancela_reserva(p_id_reserva int) RETURNS void AS
+$$
+BEGIN
+    UPDATE reservas
+    SET ativa = FALSE
+    WHERE id_reserva = p_id_reserva;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION timeout_reservas() RETURNS void as
+$$
+DECLARE
+    hoje date;
+BEGIN
+    hoje := NOW()::date;
+    UPDATE reservas
+    SET ativa = FALSE
+    WHERE data_reserva = hoje - 1;
+END;
+$$
+LANGUAGE plpgsql;

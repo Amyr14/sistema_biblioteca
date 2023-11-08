@@ -1,0 +1,14 @@
+mat-sidenav-container{
+    height: 100%;
+    width: 100%;
+}
+
+mat-sidenav
+{
+    width: 35%;
+    padding: 2%;
+}
+
+.card-sidenav-btn{
+    margin-bottom: 5%;
+}

@@ -41,8 +41,25 @@ $$
 DECLARE
     resultado json;
 BEGIN
-    SELECT JSON_AGG(l.*) INTO resultado
-    FROM livros l;
+    SELECT JSON_AGG(t.*) INTO resultado
+    FROM (SELECT l.*, ARRAY_AGG(lta.nome_autor) AS autores
+          FROM livros l
+          JOIN livros_tem_autores lta
+          ON l.id_livro = lta.id_livro
+          GROUP BY l.id_livro) t;
+
+    RETURN resultado;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION mostra_autores() RETURNS json AS
+$$
+DECLARE
+    resultado json;
+BEGIN
+    SELECT JSON_AGG(a.*) INTO resultado
+    FROM autores a;
 
     RETURN resultado;
 END;

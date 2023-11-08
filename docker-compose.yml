@@ -4,7 +4,7 @@ services:
 
   # construção da imagem da api
   api_sistema_biblioteca:
-    container_name: sistema_biblioteca 
+    container_name: sistema_biblioteca
     env_file:
       - ./.env
     environment:
@@ -23,7 +23,7 @@ services:
       - /build/node_modules
     depends_on:
       - postgres
-  
+
   # construção da imagem do banco
   postgres:
     container_name: db_biblioteca
@@ -32,14 +32,14 @@ services:
     image: postgres:14.7
     restart: always
     ports:
-    - $PGLOCALPORT:$PGPORT
+      - $PGLOCALPORT:$PGPORT
     environment:
       - POSTGRES_DB=$PGDATABASE
-      - POSTGRES_USER=$PGUSER 
-      - POSTGRES_PASSWORD=$PGPASSWORD 
+      - POSTGRES_USER=$PGUSER
+      - POSTGRES_PASSWORD=$PGPASSWORD
     volumes:
-    - pg_data:/var/lib/postgresql/data
-    - ./schema.sql:/docker-entrypoint-initdb.d/init.sql
+      - pg_data:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   pg_data:

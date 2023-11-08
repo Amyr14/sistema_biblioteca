@@ -1,0 +1,33 @@
+<table mat-table [dataSource]="listaLivros" class="mat-elevation-z8">
+  <!--- Note that these columns can be defined in any order.
+                      The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- titulo Column -->
+  <ng-container matColumnDef="titulo">
+    <th mat-header-cell *matHeaderCellDef>titl</th>
+    <td mat-cell *matCellDef="let livro">{{ livro.nome }}</td>
+  </ng-container>
+
+  <!-- editora Column -->
+  <ng-container matColumnDef="editora">
+    <th mat-header-cell *matHeaderCellDef>Editora</th>
+    <td mat-cell *matCellDef="let livro">{{ livro.editora }}</td>
+  </ng-container>
+
+  <!-- autores Column -->
+  <ng-container matColumnDef="autores">
+    <th mat-header-cell *matHeaderCellDef>Autores</th>
+    <td mat-cell *matCellDef="let livro">{{ livro.autores }}</td>
+  </ng-container>
+
+  <!--  Column -->
+  <ng-container matColumnDef="id_funcionario">
+    <th mat-header-cell *matHeaderCellDef>Funcionario responsável</th>
+    <td mat-cell *matCellDef="let livro">
+      {{ livro.id_funcionario }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

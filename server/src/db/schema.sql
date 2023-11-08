@@ -4,6 +4,17 @@ COMMENT ON SCHEMA public IS 'standard public schema';
 
 -- DROP SEQUENCE public.autores_id_autor_seq;
 
+CREATE SEQUENCE public.reserva_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+
+ALTER SEQUENCE public.reserva_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.reserva_seq TO usuario_biblioteca;
+
 CREATE SEQUENCE public.autores_seq
 	INCREMENT BY 1
 	MINVALUE 1
@@ -14,8 +25,8 @@ CREATE SEQUENCE public.autores_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.autores_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.autores_seq TO postgres;
+ALTER SEQUENCE public.autores_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.autores_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.categorias_id_categoria_seq;
 
@@ -29,8 +40,8 @@ CREATE SEQUENCE public.categorias_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.categorias_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.categorias_seq TO postgres;
+ALTER SEQUENCE public.categorias_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.categorias_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.emprestimos_seq;
 
@@ -44,8 +55,8 @@ CREATE SEQUENCE public.emprestimos_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.emprestimos_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.emprestimos_seq TO postgres;
+ALTER SEQUENCE public.emprestimos_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.emprestimos_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.emprestimos_tem_exemplares_id_seq;
 
@@ -59,8 +70,8 @@ CREATE SEQUENCE public.emprestimos_tem_exemplares_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.emprestimos_tem_exemplares_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.emprestimos_tem_exemplares_seq TO postgres;
+ALTER SEQUENCE public.emprestimos_tem_exemplares_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.emprestimos_tem_exemplares_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.exemplares_id_exemplar_seq;
 
@@ -74,8 +85,8 @@ CREATE SEQUENCE public.exemplares_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.exemplares_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.exemplares_seq TO postgres;
+ALTER SEQUENCE public.exemplares_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.exemplares_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.funcionarios_id_funcionarios_seq;
 
@@ -89,8 +100,8 @@ CREATE SEQUENCE public.funcionarios_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.funcionarios_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.funcionarios_seq TO postgres;
+ALTER SEQUENCE public.funcionarios_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.funcionarios_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.funcionarios_tem_telefones_id_seq;
 
@@ -104,8 +115,8 @@ GRANT ALL ON SEQUENCE public.funcionarios_seq TO postgres;
 
 -- Permissions
 
--- ALTER SEQUENCE public.funcionarios_tem_telefones_id_seq OWNER TO postgres;
--- GRANT ALL ON SEQUENCE public.funcionarios_tem_telefones_id_seq TO postgres;
+-- ALTER SEQUENCE public.funcionarios_tem_telefones_id_seq OWNER TO usuario_biblioteca;
+-- GRANT ALL ON SEQUENCE public.funcionarios_tem_telefones_id_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.livros_id_livro_seq;
 
@@ -119,8 +130,8 @@ CREATE SEQUENCE public.livros_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.livros_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.livros_seq TO postgres;
+ALTER SEQUENCE public.livros_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.livros_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.livros_tem_autores_id_seq;
 
@@ -134,8 +145,8 @@ CREATE SEQUENCE public.livros_tem_autores_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.livros_tem_autores_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.livros_tem_autores_seq TO postgres;
+ALTER SEQUENCE public.livros_tem_autores_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.livros_tem_autores_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.multas_id_multa_seq;
 
@@ -149,8 +160,8 @@ CREATE SEQUENCE public.multas_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.multas_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.multas_seq TO postgres;
+ALTER SEQUENCE public.multas_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.multas_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.reservas_id_exemplar_seq;
 
@@ -164,8 +175,8 @@ CREATE SEQUENCE public.reservas_id_exemplar_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.reservas_id_exemplar_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.reservas_id_exemplar_seq TO postgres;
+ALTER SEQUENCE public.reservas_id_exemplar_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.reservas_id_exemplar_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.reservas_id_reserva_seq;
 
@@ -179,8 +190,8 @@ CREATE SEQUENCE public.reservas_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.reservas_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.reservas_seq TO postgres;
+ALTER SEQUENCE public.reservas_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.reservas_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.supervisao_id_supervisao_seq;
 
@@ -194,8 +205,8 @@ CREATE SEQUENCE public.supervisao_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.supervisao_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.supervisao_seq TO postgres;
+ALTER SEQUENCE public.supervisao_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.supervisao_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.telefones_id_telefone_seq;
 
@@ -209,8 +220,8 @@ GRANT ALL ON SEQUENCE public.supervisao_seq TO postgres;
 
 -- Permissions
 
---ALTER SEQUENCE public.telefones_id_telefone_seq OWNER TO postgres;
--- GRANT ALL ON SEQUENCE public.telefones_id_telefone_seq TO postgres;
+--ALTER SEQUENCE public.telefones_id_telefone_seq OWNER TO usuario_biblioteca;
+-- GRANT ALL ON SEQUENCE public.telefones_id_telefone_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.usuarios_id_usuario_seq;
 
@@ -224,8 +235,8 @@ CREATE SEQUENCE public.usuarios_seq
 
 -- Permissions
 
-ALTER SEQUENCE public.usuarios_seq OWNER TO postgres;
-GRANT ALL ON SEQUENCE public.usuarios_seq TO postgres;
+ALTER SEQUENCE public.usuarios_seq OWNER TO usuario_biblioteca;
+GRANT ALL ON SEQUENCE public.usuarios_seq TO usuario_biblioteca;
 
 -- DROP SEQUENCE public.usuarios_tem_telefone_id_seq;
 
@@ -239,8 +250,8 @@ GRANT ALL ON SEQUENCE public.usuarios_seq TO postgres;
 
 -- Permissions
 
--- ALTER SEQUENCE public.usuarios_tem_telefone_id_seq OWNER TO postgres;
--- GRANT ALL ON SEQUENCE public.usuarios_tem_telefone_id_seq TO postgres;
+-- ALTER SEQUENCE public.usuarios_tem_telefone_id_seq OWNER TO usuario_biblioteca;
+-- GRANT ALL ON SEQUENCE public.usuarios_tem_telefone_id_seq TO usuario_biblioteca;
 -- public.autores definition
 
 -- Drop table
@@ -254,8 +265,8 @@ CREATE TABLE public.autores (
 
 -- Permissions
 
-ALTER TABLE public.autores OWNER TO postgres;
-GRANT ALL ON TABLE public.autores TO postgres;
+ALTER TABLE public.autores OWNER TO usuario_biblioteca;
+GRANT ALL ON TABLE public.autores TO usuario_biblioteca;
 
 
 -- public.categorias definition
@@ -274,8 +285,8 @@ CREATE TABLE public.categorias (
 
 -- Permissions
 
-ALTER TABLE public.categorias OWNER TO postgres;
-GRANT ALL ON TABLE public.categorias TO postgres;
+ALTER TABLE public.categorias OWNER TO usuario_biblioteca;
+GRANT ALL ON TABLE public.categorias TO usuario_biblioteca;
 
 
 -- public.funcionarios definition
@@ -287,6 +298,7 @@ GRANT ALL ON TABLE public.categorias TO postgres;
 CREATE TABLE public.funcionarios (
 	id_funcionario int4 NOT NULL,
 	nome varchar(256) NOT NULL,
+	senha varchar(256) NOT NULL,
 	cpf char(11) NOT NULL,
 	email varchar(256) NOT NULL,
 	telefones char(11)[] NOT NULL,
@@ -296,8 +308,8 @@ CREATE TABLE public.funcionarios (
 
 -- Permissions
 
-ALTER TABLE public.funcionarios OWNER TO postgres;
-GRANT ALL ON TABLE public.funcionarios TO postgres;
+ALTER TABLE public.funcionarios OWNER TO usuario_biblioteca;
+GRANT ALL ON TABLE public.funcionarios TO usuario_biblioteca;
 
 
 -- public.telefones definition
@@ -314,8 +326,8 @@ GRANT ALL ON TABLE public.funcionarios TO postgres;
 
 -- Permissions
 
--- ALTER TABLE public.telefones OWNER TO postgres;
--- GRANT ALL ON TABLE public.telefones TO postgres;
+-- ALTER TABLE public.telefones OWNER TO usuario_biblioteca;
+-- GRANT ALL ON TABLE public.telefones TO usuario_biblioteca;
 
 
 -- public.funcionarios_tem_telefones definition
@@ -335,8 +347,8 @@ GRANT ALL ON TABLE public.funcionarios TO postgres;
 
 -- Permissions
 
--- ALTER TABLE public.funcionarios_tem_telefones OWNER TO postgres;
--- GRANT ALL ON TABLE public.funcionarios_tem_telefones TO postgres;
+-- ALTER TABLE public.funcionarios_tem_telefones OWNER TO usuario_biblioteca;
+-- GRANT ALL ON TABLE public.funcionarios_tem_telefones TO usuario_biblioteca;
 
 
 -- public.livros definition
@@ -358,8 +370,8 @@ CREATE TABLE public.livros (
 
 -- Permissions
 
-ALTER TABLE public.livros OWNER TO postgres;
-GRANT ALL ON TABLE public.livros TO postgres;
+ALTER TABLE public.livros OWNER TO usuario_biblioteca;
+GRANT ALL ON TABLE public.livros TO usuario_biblioteca;
 
 
 -- public.livros_tem_autores definition
@@ -379,8 +391,8 @@ CREATE TABLE public.livros_tem_autores (
 
 -- Permissions
 
-ALTER TABLE public.livros_tem_autores OWNER TO postgres;
-GRANT ALL ON TABLE public.livros_tem_autores TO postgres;
+ALTER TABLE public.livros_tem_autores OWNER TO usuario_biblioteca;
+GRANT ALL ON TABLE public.livros_tem_autores TO usuario_biblioteca;
 
 
 -- public.supervisao definition
@@ -400,8 +412,8 @@ CREATE TABLE public.supervisao (
 
 -- Permissions
 
-ALTER TABLE public.supervisao OWNER TO postgres;
-GRANT ALL ON TABLE public.supervisao TO postgres;
+ALTER TABLE public.supervisao OWNER TO usuario_biblioteca;
+GRANT ALL ON TABLE public.supervisao TO usuario_biblioteca;
 
 
 -- public.usuarios definition
@@ -413,6 +425,7 @@ GRANT ALL ON TABLE public.supervisao TO postgres;
 CREATE TABLE public.usuarios (
 	id_usuario serial4 NOT NULL,
 	nome varchar(256) NOT NULL,
+	senha varchar(256) NOT NULL,
 	cpf char(11) NOT NULL,
 	email varchar(256) NOT NULL,
 	endereco varchar(256) NOT NULL,
@@ -424,8 +437,8 @@ CREATE TABLE public.usuarios (
 
 -- Permissions
 
-ALTER TABLE public.usuarios OWNER TO postgres;
-GRANT ALL ON TABLE public.usuarios TO postgres;
+ALTER TABLE public.usuarios OWNER TO usuario_biblioteca;
+GRANT ALL ON TABLE public.usuarios TO usuario_biblioteca;
 
 
 -- public.usuarios_tem_telefone definition
@@ -445,8 +458,8 @@ GRANT ALL ON TABLE public.usuarios TO postgres;
 
 -- Permissions
 
--- ALTER TABLE public.usuarios_tem_telefone OWNER TO postgres;
--- GRANT ALL ON TABLE public.usuarios_tem_telefone TO postgres;
+-- ALTER TABLE public.usuarios_tem_telefone OWNER TO usuario_biblioteca;
+-- GRANT ALL ON TABLE public.usuarios_tem_telefone TO usuario_biblioteca;
 
 
 -- public.emprestimos definition
@@ -465,8 +478,8 @@ CREATE TABLE public.exemplares (
 
 -- Permissions
 
-ALTER TABLE public.exemplares OWNER TO postgres;
-GRANT ALL ON TABLE public.exemplares TO postgres;
+ALTER TABLE public.exemplares OWNER TO usuario_biblioteca;
+GRANT ALL ON TABLE public.exemplares TO usuario_biblioteca;
 
 CREATE TABLE public.emprestimos (
 	id_emprestimo serial4 NOT NULL,
@@ -483,8 +496,8 @@ CREATE TABLE public.emprestimos (
 
 -- Permissions
 
-ALTER TABLE public.emprestimos OWNER TO postgres;
-GRANT ALL ON TABLE public.emprestimos TO postgres;
+ALTER TABLE public.emprestimos OWNER TO usuario_biblioteca;
+GRANT ALL ON TABLE public.emprestimos TO usuario_biblioteca;
 
 
 -- public.exemplares definition
@@ -506,8 +519,8 @@ CREATE TABLE public.multas (
 
 -- Permissions
 
-ALTER TABLE public.multas OWNER TO postgres;
-GRANT ALL ON TABLE public.multas TO postgres;
+ALTER TABLE public.multas OWNER TO usuario_biblioteca;
+GRANT ALL ON TABLE public.multas TO usuario_biblioteca;
 
 
 -- public.reservas definition
@@ -529,8 +542,8 @@ CREATE TABLE public.reservas (
 
 -- Permissions
 
-ALTER TABLE public.reservas OWNER TO postgres;
-GRANT ALL ON TABLE public.reservas TO postgres;
+ALTER TABLE public.reservas OWNER TO usuario_biblioteca;
+GRANT ALL ON TABLE public.reservas TO usuario_biblioteca;
 
 
 -- Categorias Hardcoded
@@ -557,8 +570,8 @@ INSERT INTO categorias VALUES (4, 'Professor PG', 90, 6);
 
 -- Permissions
 
--- ALTER TABLE public.emprestimos_tem_exemplares OWNER TO postgres;
--- GRANT ALL ON TABLE public.emprestimos_tem_exemplares TO postgres;
+-- ALTER TABLE public.emprestimos_tem_exemplares OWNER TO usuario_biblioteca;
+-- GRANT ALL ON TABLE public.emprestimos_tem_exemplares TO usuario_biblioteca;
 
 
 CREATE TABLE constantes (
