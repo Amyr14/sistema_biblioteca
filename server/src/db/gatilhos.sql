@@ -137,7 +137,7 @@ BEGIN
     FROM exemplares e
     WHERE NEW.id_exemplar = e.id_exemplar;
 
-    IF colecao = 'RESERVA' THEN
+    IF colecao = 'reserva' THEN
         RAISE EXCEPTION 'Livros da coleção de reserva não podem ser emprestados';
     END IF;
 
