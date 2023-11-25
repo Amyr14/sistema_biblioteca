@@ -13,6 +13,8 @@ services:
       - PGHOST=db_biblioteca
       - PGPASSWORD=$PGPASSWORD
       - PGPORT=$PGPORT
+      - EMAIL=$EMAIL
+      - SENHA_EMAIL=$SENHA_EMAIL
     build:
       context: ./server
       dockerfile: server.dockerfile

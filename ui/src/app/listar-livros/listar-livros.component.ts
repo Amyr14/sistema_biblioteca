@@ -10,10 +10,22 @@ import { ApiService } from '../shared/api.service';
 })
 export class ListarLivrosComponent {
 
+  listaVazia = true;
   listaLivros: Observable<Livro[]>;
   displayedColumns: string[] = ["titulo", "editora", "autores", "id_funcionario"]
 
   constructor(private service: ApiService) {
-    this.listaLivros = service.listarLivros()
+    const listaLivros = service.listarLivros()
+    this.listaLivros = listaLivros
+
+    // checa se há algum livro na lista
+    listaLivros.subscribe({
+      next: (livros) => {
+        console.log(livros[0])
+        if (livros[0]) {
+          this.listaVazia = false
+        }
+      }
+    })
   }
 }

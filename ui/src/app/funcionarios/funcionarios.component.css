@@ -9,6 +9,10 @@ mat-sidenav
     padding: 2%;
 }
 
+button{
+    justify-content: left;
+}
+
 .card-sidenav-btn{
     margin-bottom: 5%;
 }

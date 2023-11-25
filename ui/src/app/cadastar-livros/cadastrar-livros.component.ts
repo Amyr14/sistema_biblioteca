@@ -22,10 +22,13 @@ export class CadastrarLivrosComponent {
   }
 
   onSubmit() {
-    console.log(this.form.value)
-    this.form.value["autores"] = this.form.value["autores"].split(",")
-    this.form.value["id_funcionario"] = localStorage['id']
-    this.service.cadastrarLivro(this.form.value).subscribe(result => console.log(result))
+    const funcionario = localStorage.getItem("dados")
+    if (funcionario) {
+      this.form.value["autores"] = this.form.value["autores"].split(",")
+      this.form.value["id_funcionario"] = JSON.parse(funcionario)[0].id_funcionario
+      this.service.cadastrarLivro(this.form.value).subscribe(result => console.log(result))
+      console.log(this.form.value)
+    }
   }
 
 }

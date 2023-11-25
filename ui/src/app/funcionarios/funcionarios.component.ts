@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 
 export class FuncionariosComponent {
 
-  window: string = 'cadastrarFuncionario';
+  window: string = 'cadastrarFuncionarios';
   mudarComponente(newWindow: string) {
     this.window = newWindow;
   }

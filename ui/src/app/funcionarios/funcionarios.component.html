@@ -4,7 +4,7 @@
       <button
         color="primary"
         mat-raised-button
-        (click)="mudarComponente('cadastrarFuncionario'); sidenav.toggle()"
+        (click)="mudarComponente('cadastrarFuncionarios'); sidenav.toggle()"
       >
         Cadastrar Funcionarios
         <mat-icon>assignment-icon</mat-icon>
@@ -15,7 +15,7 @@
       <button
         color="primary"
         mat-raised-button
-        (click)="mudarComponente('listarFuncionario'); sidenav.toggle()"
+        (click)="mudarComponente('listarFuncionarios'); sidenav.toggle()"
       >
         Listar Funcionarios
         <mat-icon>assignment-icon</mat-icon>
@@ -26,7 +26,7 @@
       <button
         color="primary"
         mat-raised-button
-        (click)="mudarComponente('cadastrarLivro'); sidenav.toggle()"
+        (click)="mudarComponente('cadastrarLivros'); sidenav.toggle()"
       >
         Cadastrar Livros
         <mat-icon>assignment-icon</mat-icon>
@@ -37,10 +37,21 @@
       <button
         color="primary"
         mat-raised-button
-        (click)="mudarComponente('listarLivro'); sidenav.toggle()"
+        (click)="mudarComponente('listarLivros'); sidenav.toggle()"
       >
         Listar Livros
         <mat-icon>assignment-icon</mat-icon>
+      </button>
+    </mat-card>
+
+    <mat-card class="card-sidenav-btn">
+      <button
+      color="primary"
+      mat-raised-button
+      (click)="mudarComponente('cadastrarExemplares'); sidenav.toggle()"
+      >
+      Cadastrar Exemplares
+      <mat-icon>assignment-icon</mat-icon>
       </button>
     </mat-card>
   </mat-sidenav>
@@ -53,17 +64,22 @@
     </mat-toolbar>
 
     <app-cadastar-funcionarios
-      *ngIf="window == 'cadastrarFuncionario'"
+      *ngIf="window == 'cadastrarFuncionarios'"
     ></app-cadastar-funcionarios>
 
     <app-listar-funcionarios
-      *ngIf="window == 'listarFuncionario'"
+      *ngIf="window == 'listarFuncionarios'"
     ></app-listar-funcionarios>
 
     <app-cadastrar-livros
-      *ngIf="window == 'cadastrarLivro'"
+      *ngIf="window == 'cadastrarLivros'"
     ></app-cadastrar-livros>
 
-    <app-listar-livros *ngIf="window == 'listarLivro'"></app-listar-livros>
+    <app-listar-livros *ngIf="window == 'listarLivros'"></app-listar-livros>
+    
+    <app-cadastrar-exemplares
+      *ngIf="window == 'cadastrarExemplares'"
+    ></app-cadastrar-exemplares>
+    
   </mat-sidenav-content>
 </mat-sidenav-container>

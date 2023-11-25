@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Funcionario } from './models/funcionario';
+import { Livro } from './models/livro';
+import { Login } from './models/login';
 import { Usuario } from './models/usuario';
-import { Livro } from './models/livro'
 @Injectable({
   providedIn: 'root'
 })
@@ -23,15 +24,23 @@ export class ApiService {
     return this.http.post<Funcionario>(this.API_BASE + "/funcionarios", data);
   }
 
+  listarFuncionarioId(data: any) {
+    console.log(data)
+    return this.http.get<Funcionario>(this.API_BASE + "/funcionarios/" + data)
+  }
   // metodos de usuarios
   listarUsuarios() {
     return this.http.get<Usuario[]>(this.API_BASE + "/usuarios")
   }
 
   cadastrarUsuarios(data: Usuario) {
-    return this.http.post<Usuario>(this.API_BASE + "/ususarios", data)
+    return this.http.post<Usuario>(this.API_BASE + "/usuarios", data)
   }
 
+  listarUsuariosId(data: any) {
+    console.log(data)
+    return this.http.get<Usuario>(this.API_BASE + "/usuarios/" + data)
+  }
   // metodo de livros
 
   listarLivros() {
@@ -42,6 +51,9 @@ export class ApiService {
     return this.http.post<Livro>(this.API_BASE + "/livros", data)
   }
 
-  // 
+  // login
+  login(data: { cpf: Login }) {
+    return this.http.post<any>(this.API_BASE + "/login", data)
+  }
 
 }

@@ -10,11 +10,23 @@ import { Funcionario } from '../shared/models/funcionario';
 })
 export class ListarFuncionariosComponent {
 
+  listaVazia = true;
   listaFuncionarios: Observable<Funcionario[]>;
   displayedColumns: string[] = ["nome", "cpf", "email", "telefones", "tipo_funcionario"]
 
   constructor(private service: ApiService) {
-    this.listaFuncionarios = service.listarFuncionarios()
+    const listaFuncionarios = service.listarFuncionarios();
+    this.listaFuncionarios = listaFuncionarios;
+    
+    // checa se há algum funcionário na lista
+    listaFuncionarios.subscribe({
+      next: (funcionarios) => {
+        console.log(funcionarios[0])
+        if (funcionarios[0]) {
+          this.listaVazia = false
+        }
+      }
+    })
   }
 
 }
